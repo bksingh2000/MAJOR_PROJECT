@@ -1,0 +1,33 @@
+<html>
+
+<head>
+    <title>Train - Facial Recognition Attendence System</title>
+    <script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
+</head>
+<video id="webcam" autoplay playsinline width="640" height="480"></video>
+<canvas id="canvas" class="d-none"></canvas>
+<audio id="snapSound" src="audio/snap.wav" preload="auto"></audio>
+
+<button onclick="snap()">Snap</button>
+<button onclick="webcam.stop()">Stop</button>
+<button onclick="upload()">Upload</button>
+<a id="download-photo" href="">Download</a>
+<script>
+    const webcamElement = document.getElementById('webcam');
+    const canvasElement = document.getElementById('canvas');
+    const snapSoundElement = document.getElementById('snapSound');
+    const webcam = new Webcam(webcamElement, 'user', canvasElement, snapSoundElement);
+
+    webcam.start()
+        .then(result => {
+            console.log("webcam started");
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+    function snap() {
+        let picture = webcam.snap();
+        document.querySelector('#download-photo').href = picture;
+    }
+</script>

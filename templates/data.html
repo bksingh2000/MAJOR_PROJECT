@@ -1,0 +1,119 @@
+{% extends 'base.html' %} {% load static %} {% block user_style %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel='stylesheet' type='text/css' media='screen' href={% static 'style/webcam-demo.css' %}> {% endblock user_style %} {% block header %}Train Data{% endblock header %} {% block header1 %}Train Data{% endblock header1 %} {% block content %}
+
+<!-- Forms Section-->
+<section class="forms">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Basic Form-->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center">
+                        <h3 class="h4">Via Images</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Upload your image in high quality</p>
+                        <form method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label class="form-control-label">Upload</label>
+                                <input id="fileInput" type="file" name="image" accept="image/*" class="form-control" onchange="readURL(this);">{% if msg %}
+                                <label>{{msg}}</label>
+                                {% endif %}
+                            </div>
+                            <div class="form-group output" style="display: none;">
+                                <label class="form-control-label">Output</label>
+                                <input id="myimage" type="image" src="" style="width: 100%;height: auto;" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Upload" class="btn btn-primary">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center">
+                        <h3 class="h4">Via Webcam</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Capture picture from webcam</p>
+                        <main id="webcam-app">
+                            <div class="form-control webcam-start" id="webcam-control">
+                                <label class="form-switch">
+                                    <input type="checkbox" id="webcam-switch">
+                                    <i></i> 
+                                    <span id="webcam-caption">Click to Start Camera</span>
+                                    </label>
+                                <button id="cameraFlip" class="btn d-none"></button>
+                            </div>
+
+                            <div id="errorMsg" class="col-12 col-md-6 alert-danger d-none">
+                                Fail to start camera, please allow permision to access camera. <br/> If you are browsing through social media built in browsers, you would need to open the page in Sarafi (iPhone)/ Chrome (Android)
+                                <button id="closeError" class="btn btn-primary ml-3">OK</button>
+                            </div>
+                            <div class="md-modal md-effect-12">
+                                <div id="app-panel" class="app-panel md-content row p-0 m-0">
+                                    <div id="webcam-container" class="webcam-container col-12 d-none p-0 m-0">
+                                        <video id="webcam" autoplay playsinline width="640" height="480"></video>
+                                        <canvas id="canvas" class="d-none"></canvas>
+                                        <div class="flash"></div>
+                                        <audio id="snapSound" src={% static 'audio/snap.wav' %} preload="auto"></audio>
+                                    </div>
+                                    <div id="cameraControls" class="cameraControls">
+                                        <a href="#" id="upload" title="Train" class="d-none"><i class="material-icons">Train</i></a>
+
+                                        <a href="#" id="exit-app" title="Exit App" class="d-none"><i class="material-icons">exit_to_app</i></a>
+                                        <a href="#" id="take-photo" title="Take Photo"><i class="material-icons">camera_alt</i></a>
+                                        <a href="#" id="download-photo" download="selfie.png" target="_blank" title="Save Photo" class="d-none"><i class="material-icons">file_download</i></a>
+                                        <a href="#" id="resume-camera" title="Resume Camera" class="d-none"><i class="material-icons">camera_front</i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md-overlay"></div>
+
+                        </main>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+</section>
+{% endblock content %} {% block user_script %}
+<script src={% static 'js/webcam-easy.min.js' %}></script>
+<script src={% static 'js/app.js' %}></script>
+<script>
+    $(document).ready(function() {
+        $('#upload').click(function() {
+            var url = canvasElement.toDataURL();
+            console.log(url);
+            $.ajax({
+                type: 'POST',
+                url: 'camtrain',
+                data: {
+                    'img': url,
+                }
+            });
+        });
+    });
+</script>
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#myimage').attr('src', e.target.result);
+                $(".output").show()
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+{% endblock user_script %}

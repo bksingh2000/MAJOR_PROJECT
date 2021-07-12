@@ -1,0 +1,60 @@
+{% extends 'base.html' %} {% load static %} {% block user_style %}
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet"> 
+{% endblock user_style %} {% block header %}Form{% endblock header %} {% block header1 %}Form{% endblock header1 %} {% block menu_take %}active{% endblock %} {% block content %}
+
+<!-- Forms Section-->
+<section class="forms">
+    <div class="container-fluid">
+        <!-- TABLES -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center">
+                        <h3 class="h4">Present Students [{{date}}]</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                        <form method="POST" action="{% url 'Test' %}">
+                        {% csrf_token %}
+                        <input type="hidden" id="curDate" name="date"> 
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for stu in users %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>{{stu.student.id}}</td>
+                                        <td>
+                                            <!--{{name}}-->
+                                            {{stu.student}}</td>
+                                        <td><input type="checkbox" name="student" {% if stu.status %}checked{% else %}{% endif %} data-toggle="toggle" data-on="Present" data-off="Absent" data-onstyle="success" data-offstyle="danger" data-size="sm" value={{stu.student.id}}></td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <td colspan=4><input type="Submit" class="btn btn-primary" value="Save"> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- TABLES -->
+    </div>
+</section>
+{% endblock content %} {% block user_script %}
+<script>
+var utc = new Date().toJSON().slice(0,10).replace(/-/g,'-');
+document.getElementById("curDate").value = utc;
+</script>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+{% endblock user_script %}

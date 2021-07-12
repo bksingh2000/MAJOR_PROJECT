@@ -1,0 +1,267 @@
+{% extends 'base.html' %} {% load widget_tweaks %}{% load static %} {% block user_style %}
+<style>
+    .shadow {
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06) !important;
+    }
+    
+    .main-content {
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+    
+    .banner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 125px;
+        background-image: {% if user.is_teacher %}{% if user.teacher.header_pic %}url("{{user.teacher.header_pic.url}}");{% else %}linear-gradient(orange, red);{% endif %}{% else %}{% if user.student.header_pic %}url("{{user.student.header_pic.url}}");{% else %}linear-gradient(orange, red);{% endif %}{% endif %}
+        background-position: center;
+        background-size: cover;
+    }
+    
+    .img-circle {
+        height: 150px;
+        width: 150px;
+        border-radius: 150px;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+    }
+    
+    .social-links a {
+        transition: all 0.2s;
+    }
+    
+    .social-links a img {
+        height: 30px;
+    }
+    
+    .social-links a:hover {
+        transform: translateY(-3px);
+    }
+    /* TABS */
+    /* Component Needs */
+    
+    .pc-tab>input,
+    .pc-tab section>div {
+        display: none;
+    }
+    
+    #tab1:checked~section .tab1,
+    #tab2:checked~section .tab2,
+    #tab3:checked~section .tab3 {
+        display: block;
+    }
+    
+    #tab1:checked~nav .tab1,
+    #tab2:checked~nav .tab2,
+    #tab3:checked~nav .tab3 {
+        color: red;
+    }
+    /* Visual Styles */
+    
+    .pc-tab {
+        width: 100%;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .pc-tab ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .pc-tab ul li label {
+        float: left;
+        padding: 15px 25px;
+        border: 1px solid #ddd;
+        border-bottom: 0;
+        background: #eeeeee;
+        color: #444;
+    }
+    
+    .pc-tab ul li label:hover {
+        background: #dddddd;
+    }
+    
+    .pc-tab ul li label:active {
+        background: #ffffff;
+    }
+    
+    .pc-tab ul li:not(:last-child) label {
+        border-right-width: 0;
+    }
+    
+    .pc-tab section {
+        /* clear: both; */
+    }
+    
+    .pc-tab section div {
+        padding: 20px;
+        width: 100%;
+        border: 1px solid #ddd;
+        background: #fff;
+        line-height: 1.5em;
+        letter-spacing: 0.3px;
+        color: #444;
+    }
+    
+    .pc-tab section div h2 {
+        margin: 0;
+        font-family: "Raleway";
+        letter-spacing: 1px;
+        color: #34495e;
+    }
+    
+    #tab1:checked~nav .tab1 label,
+    #tab2:checked~nav .tab2 label,
+    #tab3:checked~nav .tab3 label {
+        background: white;
+        color: #111;
+        position: relative;
+    }
+    
+    #tab1:checked~nav .tab1 label:after,
+    #tab2:checked~nav .tab2 label:after,
+    #tab3:checked~nav .tab3 label:after {
+        content: "";
+        display: block;
+        position: absolute;
+        height: 2px;
+        width: 100%;
+        background: #ffffff;
+        left: 0;
+        bottom: -1px;
+    }
+    /* Style inputs with type="text", select elements and textareas */
+    
+    input[type=text],
+    select,
+    textarea,
+    input[type=file],
+    input[type=password] {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        display: inline-block;
+        border: none;
+        background: #f1f1f1;
+    }
+</style> {% endblock user_style %} {% block header %}Profile{% endblock header %} {% block header1 %}Profile{% endblock header1 %}
+{% block menu_profile %}active{% endblock %}
+{% block content %}
+
+<section class="forms">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Basic Form-->
+            <div class="col-lg-5">
+                <div class="profile-card card rounded-lg shadow p-4 p-xl-5 mb-4 text-center position-relative overflow-hidden">
+                    <div class="banner"></div>
+                    {% if user.is_teacher %}
+                    <img src="{% if user.teacher.profile_pic %}{{user.teacher.profile_pic.url}}{% else %}{% endif %}" alt="" class="img-circle mx-auto mb-3">
+                    <h3 class="mb-4">{% if not user.teacher.first_name %}{{user.get_username|title}}{% else %}{{user.teacher.first_name|title}} {{user.teacher.last_name|title}}{% endif %}</h3>
+                    <div class="text-left mb-4">
+                        <p class="mb-2"><i class="fa fa-envelope mr-2"></i>{{user.email}}</p>
+                        {% if user.teacher.bio %}<p class="mb-2"><i class="fa fa-info-circle mr-2"></i>{{user.teacher.bio|title}}</p>{% endif %}
+                        {% if user.teacher.location %}<p class="mb-2"><i class="fa fa-map-marker mr-2"></i> {{user.teacher.location|title}}</p>{% endif %}
+                    </div>
+                    <div class="social-links d-flex justify-content-center">
+                        <a href="#!" class="mx-2"><img src="https://kiranworkspace.com/demo/projects/code-snippets/card/profile-card/img/social/dribbble.svg" alt="Dribbble"></a>
+                        <a href="#!" class="mx-2"><img src="https://kiranworkspace.com/demo/projects/code-snippets/card/profile-card/img/social/facebook.svg" alt="Facebook"></a>
+                        <a href="#!" class="mx-2"><img src="https://kiranworkspace.com/demo/projects/code-snippets/card/profile-card/img/social/linkedin.svg" alt="Linkedin"></a>
+                        <a href="#!" class="mx-2"><img src="https://kiranworkspace.com/demo/projects/code-snippets/card/profile-card/img/social/youtube.svg" alt="Youtube"></a>
+                    </div>
+                    {% else %}
+                    <img src="{% if user.student.profile_pic %}{{user.student.profile_pic.url}}{% else %}{% endif %}" alt="" class="img-circle mx-auto mb-3">
+                    <h3 class="mb-4">{% if not user.student.first_name %}{{user.get_username|title}}{% else %}{{user.student.first_name|title}} {{user.student.last_name|title}}{% endif %}</h3>
+                    <div class="text-left mb-4">
+                        <p class="mb-2"><i class="fa fa-envelope mr-2"></i>{{user.email}}</p>
+                        {% if user.student.bio %}<p class="mb-2"><i class="fa fa-info-circle mr-2"></i>{{user.student.bio|title}}</p>{% endif %}
+                        {% if user.student.location %}<p class="mb-2"><i class="fa fa-map-marker mr-2"></i> {{user.student.location|title}}</p>{% endif %}
+                    </div>
+                    <div class="social-links d-flex justify-content-center">
+                        <a href="#!" class="mx-2"><img src="https://kiranworkspace.com/demo/projects/code-snippets/card/profile-card/img/social/dribbble.svg" alt="Dribbble"></a>
+                        <a href="#!" class="mx-2"><img src="https://kiranworkspace.com/demo/projects/code-snippets/card/profile-card/img/social/facebook.svg" alt="Facebook"></a>
+                        <a href="#!" class="mx-2"><img src="https://kiranworkspace.com/demo/projects/code-snippets/card/profile-card/img/social/linkedin.svg" alt="Linkedin"></a>
+                        <a href="#!" class="mx-2"><img src="https://kiranworkspace.com/demo/projects/code-snippets/card/profile-card/img/social/youtube.svg" alt="Youtube"></a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="pc-tab">
+                    <input checked="checked" id="tab1" type="radio" name="pct" />
+                    <input id="tab2" type="radio" name="pct" />
+                    <input id="tab3" type="radio" name="pct" />
+                    <nav>
+                        <ul>
+                            <li class="tab1">
+                                <label for="tab1">Basic Info</label>
+                            </li>
+                            <li class="tab2">
+                                <label for="tab2">Picture Info</label>
+                            </li>
+                            {% comment %} <li class="tab3">
+                                <label for="tab3">Social Info</label>
+                            </li> {% endcomment %}
+                        </ul>
+                    </nav>
+                    <section>
+                        <div class="tab1">
+                            <form action="{% url 'profile' %}" method="POST">
+                                {% csrf_token %}
+
+                                <input type="hidden" name="form_type" value="formOne">
+                                <label for="fname">First Name</label> {% render_field profile_form.first_name placeholder="Enter your first name" value=user.student.first_name %}
+                                <!-- <input type="text" id="fname" name="firstname" placeholder="Enter your first name" value="{{user.first_name}}"> -->
+
+                                <label for="lname">Last Name</label> {% render_field profile_form.last_name placeholder="Enter your last name" value=user.student.last_name %}
+
+                                <label for="country">Bio</label> {% render_field profile_form.bio placeholder="Enter your bio" value=user.student.bio %}
+
+
+                                <label for="subject">Location</label> {% render_field profile_form.location placeholder="Enter your location" value=user.student.location %}
+
+
+                                <input class="btn btn-primary" type="submit" value="Save Changes">
+
+                            </form>
+                        </div>
+                        <div class="tab2">
+                            <form action="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                <input type="hidden" name="form_type" value="formTwo">
+                                <label for="fname">Header Image</label> {% render_field profile_pic_form.header_pic %}
+
+                                <label for="lname">Profile Picture</label> {% render_field profile_pic_form.profile_pic %}
+
+                                <input class="btn btn-primary" type="submit" value="Save Changes">
+
+                            </form>
+                        </div>
+                        {% comment %} <div class="tab3">
+                            <form action="{% url 'account_change_password' %}" method="POST">
+                                {% csrf_token %}
+
+                                <label for="fname">Current Password</label> <input type="password" name="oldpassword" placeholder="Enter your current password">
+
+                                <label for="lname">New Password</label> <input type="password" name="password1" placeholder="Enter new password">
+                                <label for="country">Confirm Password</label> <input type="password" name="password2" placeholder="Confirm password">
+
+
+                                <input class="btn btn-primary" type="submit" value="Save Changes">
+
+                            </form>
+                        </div> {% endcomment %}
+                    </section>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %} {% load static %} {% block header %}Show Attendence{% endblock header %} {% block header1 %}My Attendence{% endblock header1 %}
+{% block menu_take %}active{% endblock %}
+{% block content %}
+
+<div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center">
+                        <h3 class="h4">Available Records</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for view in views %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>{{view.date}}</td>
+                                        <td>{% if view.status %}<span class="text-success">Present</span>{% else %}<span class="text-danger">Absent</span>{% endif %}</td>
+                                    </tr>
+                                {% empty %}
+                                <tr>
+                                    <th colspan="3" style="text-align:center;">No record found</th>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- TABLES -->
+{% endblock %}

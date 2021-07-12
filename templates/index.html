@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    <p>
+        <h1>Upload Image</h1>
+    </p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %} <input type="file" name="image" accept="image/*" onchange="readURL(this);" required>
+        <button type="submit">Upload</button>
+    </form>
+    <ol>
+    {% for name in names %}
+    <li>{{name}}</li>
+    {% endfor %}
+    </ol>
+    <img id="myimage" src="" style="display: none;height: 300px;width: auto;"> </div>
+
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#myimage').attr('src', e.target.result);
+                $("#myimage").show()
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+{% endblock content %}

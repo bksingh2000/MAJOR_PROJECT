@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% load static %} {% block header %}Home{% endblock header %} {% block header1 %}Home{% endblock header1 %} {% block menu_home %}active{% endblock %} {% block content %} {% if user.is_teacher or user.is_student %} {% else %}
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Attention!</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Currently you have successfully registered as an user but Admin has not assign your role.</p>
+                <p>Ask admin to assign your role.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+<div class="container-fluid" style="background: url('static/images/home.jpg');background-size: cover;height: 65vh;">
+    <div class="row">
+    </div>
+</div>
+{% endblock %} {% block user_script %} {% if not user.is_teacher or not user.is_student %}
+<script>
+    $(document).ready(function() {
+        $("#myModal").modal('show');
+    });
+</script>
+{% endif %} {% endblock user_script %}

@@ -1,0 +1,124 @@
+{% extends 'base.html' %} {% load static %} {% block user_style %}
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+{% endblock user_style %} {% block header %}Form{% endblock header %} {% block header1 %}Form{% endblock header1 %}
+{% block menu_take %}active{% endblock %}
+{% block content %}
+
+<!-- Forms Section-->
+<section class="forms">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Basic Form-->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center">
+                        <h3 class="h4">Take Attendence</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Upload the screenshots of images.</p>
+                        <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="line"></div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">Select Subject</label>
+                                <div class="col-sm-9">
+                                    <select name="class" class="form-control mb-3">
+                              <option>JAVA</option>
+                              <option>C++</option>
+                              <option>PYTHON</option>
+                              <option>.NET</option>
+                            </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="fileInput" class="col-sm-3 form-control-label">Upload Screenshot</label>
+                                <div class="col-sm-9">
+                                    <input id="fileInput" type="file" name="image" accept="image/*" class="form-control-file" onchange="readURL(this);">
+                                </div>
+                            </div>
+                            <div class="form-group row output" style="display: none;">
+                                <label for="fileOutput" class="col-sm-3 form-control-label">Output</label>
+                                <div class="col-sm-9">
+                                    <input id="myimage" type="image" src="" style="width: 100%;height: auto;" class="form-control-file">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-9 offset-sm-3">
+                                    <input type="submit" value="Upload" class="btn btn-primary">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if names %}
+        <!-- TABLES -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center">
+                        <h3 class="h4">Present Students</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        {% comment %} <th>Status</th> {% endcomment %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% comment %} {% for s in students %}{{s.first_name}}{% endfor %} {% endcomment %}
+                                    {% comment %} {% for name in names %} {% endcomment %}
+                                    {{error}}
+                                    {% for stu in students %}
+                                    {% for s in stu %}
+                                    <tr>
+                                        <th scope="row">{{forloop.parentloop.counter}}</th>
+                                        <td>{{s.id}}</td>
+                                        <td><!--{{name}}-->
+                                        {{s.first_name}}</td>
+                                        {% comment %} <td><input type="checkbox" checked data-toggle="toggle" data-on="Present" data-off="Absent" data-onstyle="success" data-offstyle="danger" data-size="sm"></td> {% endcomment %}
+                                    </tr>
+                                    
+                                    {% endfor %}
+                                    {% empty %}
+                                <tr>
+                                    <th colspan="3" style="text-align:center;">No matching face found</th>
+                                </tr>
+                                    {% endfor %}
+                                    <tr>
+                                    <th colspan="3"><a href="{% url 'confirm' %}" class="btn btn-success">Update</a></th>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- TABLES -->
+        {% endif %}
+    </div>
+</section>
+{% endblock content %} {% block user_script %}
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#myimage').attr('src', e.target.result);
+                $(".output").show()
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+{% endblock user_script %}
